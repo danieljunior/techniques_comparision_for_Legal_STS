@@ -1,0 +1,22 @@
+-i https://pypi.python.org/simple
+-f https://download.pytorch.org/whl/torch_stable.html
+numpy
+rank_bm25
+nodejs
+nltk==3.4.5
+tqdm
+annoy
+gensim
+fasttext
+qgrid
+transformers==3.0.2
+torch==1.6.0+cpu
+sentence_transformers
+allennlp
+NLPyPort==2.2.4
+spacy==2.3.0
+jupyterlab
+ipywidgets
+jupyterlab_code_formatter
+jupyterlab_latex
+https://github.com/explosion/spacy-models/releases/download/pt_core_news_lg-2.3.0/pt_core_news_lg-2.3.0.tar.gz
