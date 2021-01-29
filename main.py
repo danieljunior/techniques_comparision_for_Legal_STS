@@ -24,7 +24,7 @@ train, test = prepare_data(test_size=0.5)
 
 logger.info('Loading models...')
 
-tfidf = TfIdfEmbedder(X_train[:10])
+tfidf = TfIdfEmbedder(train.ementa.tolist())
 tfidf.set_indexer(setup_indexer(vectors_size=len(tfidf.get_feature_names())))
 dictionary = dict(zip(tfidf.get_feature_names(),
                       list(tfidf.idf_)))
