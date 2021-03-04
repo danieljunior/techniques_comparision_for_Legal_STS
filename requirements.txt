@@ -15,6 +15,7 @@ sentence_transformers
 allennlp
 NLPyPort==2.2.4
 spacy==2.3.0
+mlflow
 jupyterlab
 ipywidgets
 jupyterlab_code_formatter
