@@ -4,7 +4,7 @@ from annoy import AnnoyIndex
 class SentenceTransformerEmbedder():
     def __init__(self, model_path, indexer):
         self.model = SentenceTransformer(model_path)
-        self.model.max_seq_length = 512
+        # self.model.max_seq_length = 512
         self.indexer = indexer
 
     def get_embeddings(self, text):

@@ -1,4 +1,5 @@
 import logging
+import joblib
 from annoy import AnnoyIndex
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
@@ -9,13 +10,14 @@ from tfidf_embedder import TfIdfEmbedder
 from elmo_embedder import ElmoEmbedder
 from sentence_transformer_embedder import SentenceTransformerEmbedder
 from tqdm import tqdm
-from utils import prepare_data, bm25_tokenizer, biggests_index
+from utils import bm25_tokenizer, biggests_index
 from rank_bm25 import BM25Plus
 
 logger = logging.getLogger(__name__)
 logFormatter = '%(asctime)s - %(levelname)s : %(filename)s : %(funcName)s : \
 %(lineno)d : %(message)s'
-logging.basicConfig(format=logFormatter, level=logging.INFO)
+logging.basicConfig(filename='experiment_workflow.log', filemode='w', 
+                    format=logFormatter, level=logging.INFO)
 
 def setup_indexer(vectors_size=3072):
     return AnnoyIndex(vectors_size, 'angular')
@@ -72,13 +74,14 @@ def bm25(data):
     return BM25Plus(bm25_tokenizer(data))
 
 logger.info('Loading data...')
-train, test = prepare_data(test_size=0.5)
+stj_data = pd.read_csv('datasets/jurisprudencias_stj_clean.csv')
+tcu_data = pd.read_csv('datasets/jurisprudencias_tcu.csv', index_col=0)
 
 embedders = {
-    'tfidf': tfidf,
-    'bm25': bm25,
-    'word2vec': word2vec,
-    'weighted_word2vec': weighted_word2vec,    
+#     'tfidf': tfidf,
+#     'bm25': bm25,
+#     'word2vec': word2vec,
+#     'weighted_word2vec': weighted_word2vec,    
     'fasttext': fasttext,
     'weighted_fasttext': weighted_fasttext,
     'sentence_transformer': sentence_transformer,
@@ -98,24 +101,36 @@ for model_name in tqdm(embedders.keys()):
     logger.info(model_name.upper())
     
     if model_name == 'tfidf':
-        tfidf, tfidf_dictionary = embedders[model_name](train.ementa.tolist())
+        tfidf, tfidf_dictionary = embedders[model_name](tcu_data.ENUNCIADO.tolist())
         model = tfidf
     elif model_name == 'bm25':
-        model = embedders[model_name](train.ementa.tolist())
+        model = embedders[model_name](tcu_data.ENUNCIADO.tolist())
     elif 'weighted' in model_name:
         model = embedders[model_name](tfidf, tfidf_dictionary)
-        
+    else:
+        model = embedders[model_name]()
+
     if model_name != 'bm25':
         logger.info('Getting embeddings and add to indexer...')
-        for index, doc in tqdm(train.iterrows()):
-            embeddings = model.get_embeddings(doc.ementa)[0]
-            model.add_to_indexer(index, embeddings)
-
+        for index, doc in tqdm(tcu_data.iterrows()):
+            try:
+                embeddings = model.get_embeddings(doc.ENUNCIADO)[0]
+                model.add_to_indexer(index, embeddings)
+            except:
+                import pdb; pdb.set_trace()
         model.save_indexer('results/'+model_name+'.ann')
     
+    if model_name in ['bm25','tfidf']:
+        joblib.dump(model, 'results/'+model_name+'.joblib')
+        
+        # some time later...
+        
+        # load the model from disk
+        # loaded_model = joblib.load(filename)
+        
     logger.info('Getting neighbors...')
     
-    for source_index, doc in tqdm(train.iterrows()):
+    for source_index, doc in tqdm(tcu_data.iterrows()):
         
         if model_name != 'bm25':
             nns = model.indexer.get_nns_by_item(source_index, 6)
@@ -127,7 +142,7 @@ for model_name in tqdm(embedders.keys()):
                 results.append([source_index, similar_index, similarity, model_name])    
 
         else:
-            doc_scores = model.get_scores(doc.ementa.split(' '))
+            doc_scores = model.get_scores(doc.ENUNCIADO.split(' '))
             nns = biggests_index(doc_scores, 5)
             for similar_index in nns:
                 #src: https://stats.stackexchange.com/questions/171589/normalised-score-for-bm25
@@ -137,7 +152,7 @@ for model_name in tqdm(embedders.keys()):
 logger.info('Saving results...')
 data = pd.DataFrame(results, 
                     columns=['SOURCE_INDEX','SIMILAR_INDEX','COSINE_SIMILARITY','MODEL_NAME'])
-data.to_csv('results/similarities.csv')
+data.to_csv('results/tcu_similarities.csv')
 # indexer = setup_indexer()
 # indexer.load('results/bertlongformer.ann')
 
