@@ -77,11 +77,16 @@ logger.info('Loading data...')
 stj_data = pd.read_csv('datasets/jurisprudencias_stj_clean.csv')
 tcu_data = pd.read_csv('datasets/jurisprudencias_tcu.csv', index_col=0)
 
+data = {
+    'tcu': {'data': tcu_data, 'texto': 'ENUNCIADO'},
+    'stj': {'data': stj_data, 'texto': 'EMENTA'},
+}
+
 embedders = {
-#     'tfidf': tfidf,
-#     'bm25': bm25,
-#     'word2vec': word2vec,
-#     'weighted_word2vec': weighted_word2vec,    
+    'tfidf': tfidf,
+    'bm25': bm25,
+    'word2vec': word2vec,
+    'weighted_word2vec': weighted_word2vec,    
     'fasttext': fasttext,
     'weighted_fasttext': weighted_fasttext,
     'sentence_transformer': sentence_transformer,
@@ -96,63 +101,63 @@ tfidf = None
 tfidf_dictionary = None
 results = []
 
-for model_name in tqdm(embedders.keys()):
+for data_name, items in data.items(): 
 
-    logger.info(model_name.upper())
-    
-    if model_name == 'tfidf':
-        tfidf, tfidf_dictionary = embedders[model_name](tcu_data.ENUNCIADO.tolist())
-        model = tfidf
-    elif model_name == 'bm25':
-        model = embedders[model_name](tcu_data.ENUNCIADO.tolist())
-    elif 'weighted' in model_name:
-        model = embedders[model_name](tfidf, tfidf_dictionary)
-    else:
-        model = embedders[model_name]()
+    for model_name in tqdm(embedders.keys()):
 
-    if model_name != 'bm25':
-        logger.info('Getting embeddings and add to indexer...')
-        for index, doc in tqdm(tcu_data.iterrows()):
-            try:
-                embeddings = model.get_embeddings(doc.ENUNCIADO)[0]
-                model.add_to_indexer(index, embeddings)
-            except:
-                import pdb; pdb.set_trace()
-        model.save_indexer('results/'+model_name+'.ann')
-    
-    if model_name in ['bm25','tfidf']:
-        joblib.dump(model, 'results/'+model_name+'.joblib')
-        
-        # some time later...
-        
-        # load the model from disk
-        # loaded_model = joblib.load(filename)
-        
-    logger.info('Getting neighbors...')
-    
-    for source_index, doc in tqdm(tcu_data.iterrows()):
-        
-        if model_name != 'bm25':
-            nns = model.indexer.get_nns_by_item(source_index, 6)
-            source_vector = model.indexer.get_item_vector(source_index)
-            
-            for similar_index in nns[1:]:
-                similar_vector = model.indexer.get_item_vector(similar_index)
-                similarity = cosine_similarity([source_vector], [similar_vector])[0][0]
-                results.append([source_index, similar_index, similarity, model_name])    
+        logger.info(model_name.upper())
 
+        if model_name == 'tfidf':
+            tfidf, tfidf_dictionary = embedders[model_name](items['data'][items['texto']].tolist())
+            model = tfidf
+        elif model_name == 'bm25':
+            model = embedders[model_name](items['data'][items['texto']].tolist())
+        elif 'weighted' in model_name:
+            model = embedders[model_name](tfidf, tfidf_dictionary)
         else:
-            doc_scores = model.get_scores(doc.ENUNCIADO.split(' '))
-            nns = biggests_index(doc_scores, 5)
-            for similar_index in nns:
-                #src: https://stats.stackexchange.com/questions/171589/normalised-score-for-bm25
-                normalized_similarity = doc_scores[similar_index]/sum(doc_scores[nns])
-                results.append([source_index, similar_index, normalized_similarity, model_name])
+            model = embedders[model_name]()
+
+        if model_name != 'bm25':
+            logger.info('Getting embeddings and add to indexer...')
+            for index, doc in tqdm(items['data'][:10].iterrows()):
+                    embeddings = model.get_embeddings(doc[items['texto']])[0]
+                    model.add_to_indexer(index, embeddings)
+
+            model.save_indexer('results/'+data_name+'_'+model_name+'.ann')
+
+        if model_name in ['bm25','tfidf']:
+            joblib.dump(model, 'results/'+data_name+'_'+model_name+'.joblib')
+
+            # some time later...
+
+            # load the model from disk
+            # loaded_model = joblib.load(filename)
+
+        logger.info('Getting neighbors...')
+
+        for source_index, doc in tqdm(items['data'].iterrows()):
+
+            if model_name != 'bm25':
+                nns = model.indexer.get_nns_by_item(source_index, 6)
+                source_vector = model.indexer.get_item_vector(source_index)
+
+                for similar_index in nns[1:]:
+                    similar_vector = model.indexer.get_item_vector(similar_index)
+                    similarity = cosine_similarity([source_vector], [similar_vector])[0][0]
+                    results.append([source_index, similar_index, similarity, model_name])    
+
+            else:
+                doc_scores = model.get_scores(doc[items['texto']].split(' '))
+                nns = biggests_index(doc_scores, 5)
+                for similar_index in nns:
+                    #src: https://stats.stackexchange.com/questions/171589/normalised-score-for-bm25
+                    normalized_similarity = doc_scores[similar_index]/sum(doc_scores[nns])
+                    results.append([source_index, similar_index, normalized_similarity, model_name])
             
-logger.info('Saving results...')
-data = pd.DataFrame(results, 
-                    columns=['SOURCE_INDEX','SIMILAR_INDEX','COSINE_SIMILARITY','MODEL_NAME'])
-data.to_csv('results/tcu_similarities.csv')
+    logger.info('Saving results...')
+    data = pd.DataFrame(results, 
+                        columns=['SOURCE_INDEX','SIMILAR_INDEX','COSINE_SIMILARITY','MODEL_NAME'])
+    data.to_csv('results/'+data_name+'_similarities.csv')
 # indexer = setup_indexer()
 # indexer.load('results/bertlongformer.ann')
 

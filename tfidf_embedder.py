@@ -107,3 +107,6 @@ class TfIdfEmbedder(sklearn.feature_extraction.text.TfidfVectorizer):
     def save_indexer(self, path):
         self.indexer.build(10) # 10 trees
         self.indexer.save(path)
+    
+    def __getstate__(self):
+        return dict((k, v) for (k, v) in self.__dict__.items() if k != 'indexer')
