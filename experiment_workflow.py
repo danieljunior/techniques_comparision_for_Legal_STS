@@ -119,7 +119,7 @@ for data_name, items in data.items():
 
         if model_name != 'bm25':
             logger.info('Getting embeddings and add to indexer...')
-            for index, doc in tqdm(items['data'][:10].iterrows()):
+            for index, doc in tqdm(items['data'].iterrows()):
                     embeddings = model.get_embeddings(doc[items['texto']])[0]
                     model.add_to_indexer(index, embeddings)
 
