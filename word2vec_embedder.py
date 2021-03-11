@@ -3,6 +3,7 @@ import numpy as np
 from gensim import models
 import json
 import pickle
+from utils import tokenize
 
 class Word2VecEmbedder():
     
@@ -33,7 +34,7 @@ class Word2VecEmbedder():
         :return:
         """
         word_vecs = []
-        for word in doc:
+        for word in doc.split():
             try:
                 vec = self.w2v_model.wv[word]
                 word_vecs.append(vec)
@@ -51,7 +52,7 @@ class Word2VecEmbedder():
         word_vecs = []
         weight_sum = 0
         w2vwords = list(self.w2v_model.wv.vocab)
-        for word in doc:
+        for word in tokenize(doc):
             try:
                 if word in names and word in w2vwords:
                     vec = self.w2v_model.wv[word]
