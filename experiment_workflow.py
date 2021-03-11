@@ -108,10 +108,10 @@ for data_name, items in data.items():
         logger.info(model_name.upper())
 
         if model_name == 'tfidf':
-            tfidf, tfidf_dictionary = embedders[model_name](items['data'][items['texto']].tolist()[:5])
+            tfidf, tfidf_dictionary = embedders[model_name](items['data'][items['texto']].tolist())
             model = tfidf
         elif model_name == 'bm25':
-            model = embedders[model_name](items['data'][items['texto']].tolist()[:5])
+            model = embedders[model_name](items['data'][items['texto']].tolist())
         elif 'weighted' in model_name:
             model = embedders[model_name](tfidf, tfidf_dictionary)
         else:
@@ -119,7 +119,7 @@ for data_name, items in data.items():
 
         if model_name != 'bm25':
             logger.info('Getting embeddings and add to indexer...')
-            for index, doc in tqdm(items['data'][:5].iterrows()):
+            for index, doc in tqdm(items['data'].iterrows()):
                     embeddings = model.get_embeddings(doc[items['texto']])[0]
                     import pdb; pdb.set_trace()
                     model.add_to_indexer(index, embeddings)
@@ -135,7 +135,7 @@ for data_name, items in data.items():
 
         logger.info('Getting neighbors...')
 
-        for source_index, doc in tqdm(items['data'][:5].iterrows()):
+        for source_index, doc in tqdm(items['data'].iterrows()):
 
             if model_name != 'bm25':
                 nns = model.indexer.get_nns_by_item(source_index, 6)
