@@ -13,6 +13,8 @@ from NLPyPort.FullPipeline import *
 nlp_global = spacy.load('pt_core_news_lg', 
                               disable=["parser","ner", "entity_linker", "textcat", 
                                        "entity_ruler"])
+nlp_global.max_length = 10000000
+
 stemmer_global = nltk.stem.RSLPStemmer()
 
 def lematizar(documento):
@@ -43,6 +45,7 @@ class VectorizerOptions(object):
         self.nlp = spacy.load('pt_core_news_lg', 
                               disable=["parser","ner", "entity_linker", "textcat", 
                                        "entity_ruler"])
+        self.nlp.max_length = 10000000
         self.stopwords = nltk.corpus.stopwords.words('portuguese')
     
     def run(self, doc):        

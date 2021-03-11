@@ -1,5 +1,10 @@
 import logging
 import joblib
+import os
+os.environ['NUMEXPR_MAX_THREADS'] = '64'
+os.environ['NUMEXPR_NUM_THREADS'] = '64'
+
+import numexpr as ne
 from annoy import AnnoyIndex
 from sklearn.metrics.pairwise import cosine_similarity
 import pandas as pd
