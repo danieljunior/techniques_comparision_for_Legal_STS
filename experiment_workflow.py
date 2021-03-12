@@ -126,7 +126,6 @@ for data_name, items in data.items():
             logger.info('Getting embeddings and add to indexer...')
             for index, doc in tqdm(items['data'].iterrows()):
                     embeddings = model.get_embeddings(doc[items['texto']])[0]
-                    import pdb; pdb.set_trace()
                     model.add_to_indexer(index, embeddings)
             model.save_indexer('results/'+data_name+'_'+model_name+'.ann')
 
