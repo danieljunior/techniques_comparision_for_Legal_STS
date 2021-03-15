@@ -79,8 +79,8 @@ def bm25(data):
     return BM25Plus(bm25_tokenizer(data))
 
 logger.info('Loading data...')
-stj_data = pd.read_csv('datasets/jurisprudencias_stj_clean.csv').dropna().drop_duplicates()
-tcu_data = pd.read_csv('datasets/jurisprudencias_tcu.csv', index_col=0).dropna().drop_duplicates()
+stj_data = pd.read_csv('datasets/jurisprudencias_stj_final.csv')
+tcu_data = pd.read_csv('datasets/jurisprudencias_tcu_final.csv')
 
 data = {
     'tcu': {'data': tcu_data, 'texto': 'VOTO'},
@@ -88,13 +88,13 @@ data = {
 }
 
 embedders = {
-    'tfidf': tfidf,
-    'bm25': bm25,
-    'word2vec': word2vec,
-    'weighted_word2vec': weighted_word2vec,    
-    'fasttext': fasttext,
-    'weighted_fasttext': weighted_fasttext,
-    'sentence_transformer': sentence_transformer,
+#     'tfidf': tfidf,
+#     'bm25': bm25,
+#     'word2vec': word2vec,
+#     'weighted_word2vec': weighted_word2vec,    
+#     'fasttext': fasttext,
+#     'weighted_fasttext': weighted_fasttext,
+#     'sentence_transformer': sentence_transformer,
     'elmo': elmo, 
     'bert': bert,
     'itd_bert': itd_bert,
