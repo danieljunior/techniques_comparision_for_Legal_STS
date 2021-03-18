@@ -17,6 +17,7 @@ NLPyPort==2.2.4
 spacy==2.3.0
 upsetplot
 autorank
+umap-learn
 mlflow
 jupyterlab
 ipywidgets
