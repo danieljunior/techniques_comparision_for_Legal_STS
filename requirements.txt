@@ -18,6 +18,7 @@ spacy==2.3.0
 upsetplot
 autorank
 umap-learn
+bokeh==2.3.0
 mlflow
 jupyterlab
 ipywidgets
