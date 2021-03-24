@@ -88,13 +88,13 @@ data = {
 }
 
 embedders = {
-#     'tfidf': tfidf,
-#     'bm25': bm25,
-#     'word2vec': word2vec,
-#     'weighted_word2vec': weighted_word2vec,    
-#     'fasttext': fasttext,
-#     'weighted_fasttext': weighted_fasttext,
-#     'sentence_transformer': sentence_transformer,
+    'tfidf': tfidf,
+    'bm25': bm25,
+    'word2vec': word2vec,
+    'weighted_word2vec': weighted_word2vec,    
+    'fasttext': fasttext,
+    'weighted_fasttext': weighted_fasttext,
+    'sentence_transformer': sentence_transformer,
     'elmo': elmo, 
     'bert': bert,
     'itd_bert': itd_bert,
