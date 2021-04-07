@@ -9,12 +9,29 @@ nltk.download('rslp')
 from nltk.corpus import stopwords
 from NLPyPort.FullPipeline import *
 import numpy as np
+import ray
+from tqdm import tqdm
 
-def bm25_tokenizer(corpus):
+ray.init(num_cpus=4, ignore_reinit_error=True)
+
+def nlpyport_tokenizer(corpus):
     documents = [tokenize(document) for document in corpus]
 
     return documents
 
+def textos_preprocessados(docs):
+    results = []
+    for texto in tqdm(docs):
+        results.append(tokenize.remote(texto))
+
+    preprocessado = []
+    for i in results:
+        d = ray.get(i)
+        preprocessado.append(' '.join(d))
+    
+    return preprocessado
+
+@ray.remote
 def tokenize(document):
     nlpyport_options = {
             "tokenizer" : True,

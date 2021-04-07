@@ -14,14 +14,13 @@ torch==1.6.0+cpu
 sentence_transformers
 allennlp
 NLPyPort==2.2.4
-spacy==2.3.0
 upsetplot
 autorank
 umap-learn
 bokeh==2.3.0
 mlflow
+Pyro4
+ray
+gdown
 jupyterlab
 ipywidgets
-jupyterlab_code_formatter
-jupyterlab_latex
-https://github.com/explosion/spacy-models/releases/download/pt_core_news_lg-2.3.0/pt_core_news_lg-2.3.0.tar.gz
