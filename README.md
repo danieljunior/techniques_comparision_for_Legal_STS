@@ -2,8 +2,10 @@
 
 - TF-IDF
 - BM-25
+- LDA
 - Word2Vec (Average e Weighted)
 - FastText (Average e Weighted)
+- Doc2Vec
 - Sentence2Vec
 - ELMo (Average e Weighted)
 - BERT (Só pré-treinado e tunado)

@@ -1,6 +1,6 @@
 FROM continuumio/anaconda3:2019.10
 LABEL author=DanielJunior email="danieljunior@id.uff.br"
-USER root
+# USER root
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends apt-utils && \
