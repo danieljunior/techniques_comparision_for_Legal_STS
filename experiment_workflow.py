@@ -88,13 +88,21 @@ def bm25(data):
     return BM25Plus(data)
 
 logger.info('Loading and preprocessing data...')
-tcu_data = pd.read_csv('datasets/jurisprudencias_tcu_final.csv')
-tcu_data.VOTO = tcu_data.VOTO.str.lower()
-tcu_data['PREPROCESSADO'] = textos_preprocessados(tcu_data.VOTO.tolist())
+try:
+    tcu_data = pd.read_csv('datasets/jurisprudencias_tcu_final_preprocessado.csv')
+except:
+    tcu_data = pd.read_csv('datasets/jurisprudencias_tcu_final.csv')
+    tcu_data.VOTO = tcu_data.VOTO.str.lower()
+    tcu_data['PREPROCESSADO'] = textos_preprocessados(tcu_data.VOTO.tolist())
+    tcu_data.to_csv('datasets/jurisprudencias_tcu_final_preprocessado.csv')    
 
-stj_data = pd.read_csv('datasets/jurisprudencias_stj_final.csv')
-stj_data.EMENTA = stj_data.EMENTA.str.lower()
-stj_data['PREPROCESSADO'] = textos_preprocessados(stj_data.EMENTA.tolist())
+try:
+    stj_data = pd.read_csv('datasets/jurisprudencias_stj_final_preprocessado.csv')
+except:
+    stj_data = pd.read_csv('datasets/jurisprudencias_stj_final.csv')
+    stj_data.EMENTA = stj_data.EMENTA.str.lower()
+    stj_data['PREPROCESSADO'] = textos_preprocessados(stj_data.EMENTA.tolist())
+    stj_data.to_csv('datasets/jurisprudencias_stj_final_preprocessado.csv')    
 
 data = {
     'tcu': {'data': tcu_data, 'texto': 'VOTO', 'num_jurisprudencia': 44},
@@ -155,10 +163,10 @@ for data_name, items in data.items():
             for index, doc in tqdm(items['data'].iterrows()):
                     embeddings = model.get_embeddings(doc[coluna_texto])[0]
                     model.add_to_indexer(index, embeddings)
-            model.save_indexer('results/'+data_name+'_'+model_name+'.ann')
+            model.save_indexer('results/'+data_name+'/'+model_name+'.ann')
 
         if model_name in ['bm25','tfidf']:
-            joblib.dump(model, 'results/'+data_name+'_'+model_name+'.joblib')
+            joblib.dump(model, 'results/'+data_name+'/'+model_name+'.joblib')
 
             # some time later...
 
@@ -189,7 +197,7 @@ for data_name, items in data.items():
         logger.info('Saving results...')
         data = pd.DataFrame(results, 
                             columns=['SOURCE_INDEX','SIMILAR_INDEX','COSINE_SIMILARITY','MODEL_NAME'])
-        data.to_csv('results/'+data_name+'_similarities.csv')
+        data.to_csv('results/'+data_name+'/similarities.csv')
 # indexer = setup_indexer()
 # indexer.load('results/bertlongformer.ann')
 

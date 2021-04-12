@@ -1,6 +1,5 @@
 FROM continuumio/anaconda3:2019.10
 LABEL author=DanielJunior email="danieljunior@id.uff.br"
-# USER root
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends apt-utils && \
@@ -20,6 +19,8 @@ RUN /bin/bash -c "source activate base"
 
 RUN mkdir -p /app
 COPY . /app
+RUN mkdir -p /app/results/tcu && mkdir -p /app/results/stj
+
 WORKDIR /app
 
 RUN pip install --upgrade pip && \
@@ -34,8 +35,7 @@ RUN gdown https://drive.google.com/uc?id=1B-k_yGvUxkCjA009XWu9f2Untm_YN-o_ && \
     rm -f datasets.zip
 
 RUN conda install -c conda-forge black nodejs=12
-RUN jupyter labextension install @ryantam626/jupyterlab_code_formatter && \
-    jupyter labextension install @jupyter-widgets/jupyterlab-manager && \ 
+RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager && \ 
     jupyter labextension install jupyterlab-python-file --no-build && \ 
     jupyter nbextension enable --py widgetsnbextension --sys-prefix && \ 
     conda clean --all -f -y && \ 
