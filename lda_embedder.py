@@ -9,8 +9,8 @@ class LDAEmbedder():
         self.indexer = indexer
     
     def get_embeddings(self, text):
-        embeddings = self.lda.get_document_topics(self.id2word.doc2bow(text.split()))[0]
-        return [[embedding for embedding in embeddings]]
+        embeddings = self.lda.get_document_topics(self.id2word.doc2bow(text.split()), minimum_probability=0)
+        return [[embedding[1] for embedding in embeddings]]
 
     def add_to_indexer(self, index, embeddings):
         self.indexer.add_item(index, embeddings)
