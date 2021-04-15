@@ -35,7 +35,7 @@ class Word2VecEmbedder():
         word_vecs = []
         for word in doc.split():
             try:
-                vec = self.w2v_model.wv[word]
+                vec = self.w2v_model[word]
                 word_vecs.append(vec)
             except KeyError:
                 # Ignore, if the word doesn't exist in the vocabulary
@@ -50,11 +50,11 @@ class Word2VecEmbedder():
         names = self.tfidf_model.get_feature_names()
         word_vecs = []
         weight_sum = 0
-        w2vwords = list(self.w2v_model.wv.vocab)
+        w2vwords = list(self.w2v_model.vocab)
         for word in doc.split():
             try:
                 if word in names and word in w2vwords:
-                    vec = self.w2v_model.wv[word]
+                    vec = self.w2v_model[word]
                     tfidf = self.tfidf_dictionary[word] * (doc.count(word)/len(doc))
                     word_vecs.append(vec * tfidf)
                     weight_sum+= tfidf

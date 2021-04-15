@@ -26,14 +26,6 @@ WORKDIR /app
 RUN pip install --upgrade pip && \
     pip install --ignore-installed --no-cache-dir -r requirements.txt 
 
-RUN gdown https://drive.google.com/uc?id=1s4T8Y9QUNw-iKTjYfGpLhIJMAL18OWV5 && \
-    unzip models.zip && \
-    rm -f models.zip
-
-RUN gdown https://drive.google.com/uc?id=1B-k_yGvUxkCjA009XWu9f2Untm_YN-o_ && \
-    unzip datasets.zip && \
-    rm -f datasets.zip
-
 RUN conda install -c conda-forge black nodejs=12
 RUN jupyter labextension install @jupyter-widgets/jupyterlab-manager && \ 
     jupyter labextension install jupyterlab-python-file --no-build && \ 

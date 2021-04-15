@@ -16,7 +16,7 @@ def read_corpus(tokens_only=False):
             yield gensim.models.doc2vec.TaggedDocument(tokens, [i])
 
 
-train_corpus = list(read_corpus())
+# train_corpus = list(read_corpus())
 model = gensim.models.doc2vec.Doc2Vec(vector_size=100, min_count=5, epochs=10)
 model.build_vocab(read_corpus())
 model.train(read_corpus(), total_examples=model.corpus_count, epochs=model.epochs)

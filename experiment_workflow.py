@@ -105,18 +105,18 @@ except:
     stj_data.to_csv('datasets/jurisprudencias_stj_final_preprocessado.csv')    
 
 data = {
-    'tcu': {'data': tcu_data, 'texto': 'VOTO', 'num_jurisprudencia': 44},
-    'stj': {'data': stj_data, 'texto': 'EMENTA', 'num_jurisprudencia': 1458},
+    'tcu': {'data': tcu_data.sample(10), 'texto': 'VOTO', 'num_jurisprudencia': 44},
+    'stj': {'data': stj_data.sample(10), 'texto': 'EMENTA', 'num_jurisprudencia': 1458},
 }
 
 embedders = {
-    'tfidf': tfidf,
-    'bm25': bm25,
-    'lda': lda,
-    'word2vec': word2vec,
-    'weighted_word2vec': weighted_word2vec,    
-    'fasttext': fasttext,
-    'weighted_fasttext': weighted_fasttext,
+#     'tfidf': tfidf,
+#     'bm25': bm25,
+#     'lda': lda,
+#     'word2vec': word2vec,
+#     'weighted_word2vec': weighted_word2vec,    
+#     'fasttext': fasttext,
+#     'weighted_fasttext': weighted_fasttext,
     'doc2vec': doc2vec,
     'sentence_transformer': sentence_transformer,
     'bert': bert,

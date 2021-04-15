@@ -23,6 +23,17 @@
 #### Acessar container
 - `docker exec -it legal_sts bash`
 
+#### Baixar dados
+- Dentro da pasta do projeto executar:
+    - `pip install gdown`
+    - `gdown https://drive.google.com/uc?id=1s4T8Y9QUNw-iKTjYfGpLhIJMAL18OWV5 && \
+        unzip models.zip && \
+        rm -f models.zip
+
+        gdown https://drive.google.com/uc?id=1yAsQOrM6feYS-RsLVcQxaF258XJR6wFA && \
+        unzip datasets.zip && \
+        rm -f datasets.zip`
+
 #### Iniciar jupyter notebook
 
 - `jupyter notebook --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token='legalsts' &`
