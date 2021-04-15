@@ -105,8 +105,8 @@ except:
     stj_data.to_csv('datasets/jurisprudencias_stj_final_preprocessado.csv')    
 
 data = {
-    'tcu': {'data': tcu_data.sample, 'texto': 'VOTO', 'num_jurisprudencia': 44},
-    'stj': {'data': stj_data.sample, 'texto': 'EMENTA', 'num_jurisprudencia': 1458},
+    'tcu': {'data': tcu_data, 'texto': 'VOTO', 'num_jurisprudencia': 44},
+    'stj': {'data': stj_data, 'texto': 'EMENTA', 'num_jurisprudencia': 1458},
 }
 
 embedders = {
