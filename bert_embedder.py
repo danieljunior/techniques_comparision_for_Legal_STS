@@ -2,6 +2,7 @@ from transformers import BertModel, BertTokenizer
 from models.bertlongformer import get_features, get_concat_four_last_layers
 from annoy import AnnoyIndex
 import torch
+
 class BertEmbedder():
     def __init__(self, model_path, indexer):
         self.tokenizer = BertTokenizer.from_pretrained(model_path, do_lower_case=False)

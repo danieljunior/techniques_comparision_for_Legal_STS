@@ -6,7 +6,7 @@ nodejs
 nltk==3.4.5
 tqdm
 annoy
-gensim
+gensim==4.0.1
 fasttext
 qgrid
 transformers==3.0.2

@@ -1,6 +1,7 @@
 from transformers import BertTokenizerFast
 from models.bertlongformer import BertLong, get_features, get_concat_four_last_layers
 from annoy import AnnoyIndex
+import torch
 
 class LongformerEmbedder():
     def __init__(self, model_path, indexer):
@@ -9,11 +10,14 @@ class LongformerEmbedder():
         self.indexer = indexer
 
     def get_embeddings(self, text):
-        last_hidden_state, pooler_output, hidden_states = get_features(text, 
-                                                                       self.model, 
-                                                                       self.tokenizer)
-        embeddings = get_concat_four_last_layers(hidden_states)
-        return embeddings
+        outputs = get_features(text, 
+                                   self.model, 
+                                   self.tokenizer)
+        embeddings = []
+        for last_hidden_state, pooler_output, hidden_states in outputs:
+            embeddings.append(get_concat_four_last_layers(hidden_states))
+        
+        return torch.mean(torch.stack(embeddings), dim=0)
 
     def add_to_indexer(self, index, embeddings):
         self.indexer.add_item(index, embeddings)

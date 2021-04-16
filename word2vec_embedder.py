@@ -50,7 +50,7 @@ class Word2VecEmbedder():
         names = self.tfidf_model.get_feature_names()
         word_vecs = []
         weight_sum = 0
-        w2vwords = list(self.w2v_model.vocab)
+        w2vwords = [word for word, index in self.w2v_model.key_to_index.items()]
         for word in doc.split():
             try:
                 if word in names and word in w2vwords:
