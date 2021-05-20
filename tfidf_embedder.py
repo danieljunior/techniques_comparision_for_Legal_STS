@@ -1,6 +1,7 @@
 import re
 import sklearn
-class TfIdfEmbedder(sklearn.feature_extraction.text.TfidfVectorizer):
+from sklearn.feature_extraction.text import TfidfVectorizer
+class TfIdfEmbedder(TfidfVectorizer):
 
     def __init__(self, data, options={'stopwords': True, 'lemmatization': True,
                                 'specials': True, 'numbers': True, }, *args,

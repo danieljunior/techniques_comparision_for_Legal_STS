@@ -24,3 +24,5 @@ ray
 gdown
 jupyterlab
 ipywidgets
+simpletransformers
+tensorflow==1.15.2

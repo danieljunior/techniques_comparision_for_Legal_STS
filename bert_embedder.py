@@ -1,5 +1,5 @@
 from transformers import BertModel, BertTokenizer
-from models.bertlongformer import get_features, get_concat_four_last_layers
+from bertlongformer import get_features, get_concat_four_last_layers
 from annoy import AnnoyIndex
 import torch
 

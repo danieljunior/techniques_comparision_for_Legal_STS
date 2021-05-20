@@ -64,7 +64,7 @@ def doc2vec():
                            indexer = setup_indexer(vectors_size=100))
 
 def sentence_transformer():
-    return SentenceTransformerEmbedder('distiluse-base-multilingual-cased-v2', 
+    return SentenceTransformerEmbedder('models/portuguese_sentence_transformer', 
                                         setup_indexer(vectors_size=512))
 
 def elmo():
@@ -110,20 +110,20 @@ data = {
 }
 
 embedders = {
-    'tfidf': tfidf,
-    'bm25': bm25,
-    'lda': lda,
-    'word2vec': word2vec,
-    'weighted_word2vec': weighted_word2vec,    
-    'fasttext': fasttext,
-    'weighted_fasttext': weighted_fasttext,
-    'doc2vec': doc2vec,
+    # 'tfidf': tfidf,
+    # 'bm25': bm25,
+    # 'lda': lda,
+    # 'word2vec': word2vec,
+    # 'weighted_word2vec': weighted_word2vec,    
+    # 'fasttext': fasttext,
+    # 'weighted_fasttext': weighted_fasttext,
+    # 'doc2vec': doc2vec,
     'sentence_transformer': sentence_transformer,
-    'bert': bert,
-    'itd_bert': itd_bert,
-    'longformer':longformer,
-    'itd_longformer': itd_longformer,
-    'elmo': elmo, 
+    # 'bert': bert,
+    # 'itd_bert': itd_bert,
+    # 'longformer':longformer,
+    # 'itd_longformer': itd_longformer,
+    # 'elmo': elmo, 
 }
 
 tfidf = None
@@ -197,7 +197,7 @@ for data_name, items in data.items():
         logger.info('Saving results...')
         data = pd.DataFrame(results, 
                             columns=['SOURCE_INDEX','SIMILAR_INDEX','COSINE_SIMILARITY','MODEL_NAME'])
-        data.to_csv('results/'+data_name+'/similarities.csv')
+        data.to_csv('results/'+data_name+'/similarities_2.csv')
 # indexer = setup_indexer()
 # indexer.load('results/bertlongformer.ann')
 
