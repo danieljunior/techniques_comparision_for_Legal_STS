@@ -22,15 +22,14 @@
 
 #### Acessar container
 - `docker exec -it legal_sts bash`
-
 #### Baixar dados
 - Dentro da pasta do projeto executar:
     - `pip install gdown`
-    - `gdown https://drive.google.com/uc?id=1lypU6NQORACvJpZKbU6JWPHOfefwYnZe && \
+    - `gdown https://drive.google.com/uc?id=1UD-mK3K9KhuvJtRVwA_CqPE1E0Z2lAuR && \
         unzip models.zip && \
         rm -f models.zip
 
-        gdown https://drive.google.com/uc?id=1sLgo7DXAW-MHnibDpeWCK0anFbqZ8wWF && \
+        gdown https://drive.google.com/uc?id=1iTXMfsmhs4w3qgkM3kIreePUxbms6zwC && \
         unzip datasets.zip && \
         rm -f datasets.zip`
 
