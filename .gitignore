@@ -1,7 +1,6 @@
 datasets/
 models/
-results/tcu/*
-results/stj/*
+results/
 *.zip
 
 # Byte-compiled / optimized / DLL files

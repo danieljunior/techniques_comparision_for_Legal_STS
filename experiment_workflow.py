@@ -65,7 +65,7 @@ def doc2vec():
 
 def sentence_transformer():
     return SentenceTransformerEmbedder('models/portuguese_sentence_transformer', 
-                                        setup_indexer(vectors_size=512))
+                                        setup_indexer(vectors_size=768))
 
 def elmo():
     options_path = 'models/elmo/options.json'
@@ -110,20 +110,20 @@ data = {
 }
 
 embedders = {
-    # 'tfidf': tfidf,
-    # 'bm25': bm25,
-    # 'lda': lda,
-    # 'word2vec': word2vec,
-    # 'weighted_word2vec': weighted_word2vec,    
-    # 'fasttext': fasttext,
-    # 'weighted_fasttext': weighted_fasttext,
-    # 'doc2vec': doc2vec,
+    'tfidf': tfidf,
+    'bm25': bm25,
+    'lda': lda,
+    'word2vec': word2vec,
+    'weighted_word2vec': weighted_word2vec,    
+    'fasttext': fasttext,
+    'weighted_fasttext': weighted_fasttext,
+    'doc2vec': doc2vec,
     'sentence_transformer': sentence_transformer,
-    # 'bert': bert,
-    # 'itd_bert': itd_bert,
-    # 'longformer':longformer,
-    # 'itd_longformer': itd_longformer,
-    # 'elmo': elmo, 
+    'bert': bert,
+    'itd_bert': itd_bert,
+    'longformer':longformer,
+    'itd_longformer': itd_longformer,
+    'elmo': elmo, 
 }
 
 tfidf = None
