@@ -77,5 +77,5 @@ for data_name, items in datasets.items():
         logger.info('Trainning regressor...')
         regressor = LinearSVR(random_state=0, tol=1e-05)
         regressor.fit(X, y)
-        print(regressor.predict(X[:10]))
-        print(regressor.predict(y[:10]))
+        print(f'Predição: {regressor.predict(X[:10])}')
+        print(f'Real: {y[:10]}')
