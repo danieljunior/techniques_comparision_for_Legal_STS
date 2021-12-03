@@ -26,3 +26,4 @@ jupyterlab
 ipywidgets
 simpletransformers
 tensorflow==1.15.2
+faiss-cpu
