@@ -1,6 +1,7 @@
 -i https://pypi.python.org/simple
 -f https://download.pytorch.org/whl/torch_stable.html
 numpy
+pandas==1.2.4
 rank_bm25
 nodejs
 nltk==3.4.5
@@ -9,6 +10,8 @@ annoy
 gensim==4.0.1
 fasttext
 qgrid
+psutil==5.7.0
+greenlet==0.4.16
 transformers==3.0.2
 torch==1.6.0+cpu
 sentence_transformers
@@ -27,3 +30,5 @@ ipywidgets
 simpletransformers
 tensorflow==1.15.2
 faiss-cpu
+selenium 
+geckodriver-autoinstaller

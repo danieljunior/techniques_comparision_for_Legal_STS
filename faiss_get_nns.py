@@ -18,6 +18,7 @@ embedders = {
     'sentence_transformer': 768,
     'bert': 3072,
     'itd_bert': 3072,
+    'bertikal': 3072,
     'longformer':3072,
     'itd_longformer': 3072,
     'elmo': 1024, 
@@ -85,3 +86,4 @@ def get_nns():
         data.to_csv('results/faiss/'+data_name+'/similarities.csv')
 
 get_nns()
+# convert_annoy_to_faiss()
