@@ -16,7 +16,7 @@
 ## Env build
 
 #### Docker image build
-- `docker build -f Dockerfile -t legal_sts .`
+- `docker build --rm -f Dockerfile -t legal_sts .`
 
 #### Containers initialize
 

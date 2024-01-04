@@ -32,3 +32,4 @@ tensorflow==1.15.2
 faiss-cpu
 selenium 
 geckodriver-autoinstaller
+protobuf==3.20.*

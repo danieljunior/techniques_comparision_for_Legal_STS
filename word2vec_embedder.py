@@ -35,7 +35,7 @@ class Word2VecEmbedder():
         word_vecs = []
         for word in doc.split():
             try:
-                vec = self.w2v_model[word]
+                vec = self.w2v_model[word.lower()]
                 word_vecs.append(vec)
             except KeyError:
                 # Ignore, if the word doesn't exist in the vocabulary
@@ -52,6 +52,7 @@ class Word2VecEmbedder():
         weight_sum = 0
         w2vwords = [word for word, index in self.w2v_model.key_to_index.items()]
         for word in doc.split():
+            word = word.lower()
             try:
                 if word in names and word in w2vwords:
                     vec = self.w2v_model[word]

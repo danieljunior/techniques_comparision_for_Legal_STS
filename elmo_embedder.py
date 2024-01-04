@@ -12,7 +12,7 @@ class ElmoEmbedder():
         character_ids = batch_to_ids(sentences)
         elmo_embeddings = self.elmo(character_ids)
         tokens_embeddings = elmo_embeddings["elmo_representations"][0][0]
-        embeddings = torch.mean(tokens_embeddings, dim=0)
+        embeddings = torch.mean(tokens_embeddings, dim=0).detach()
         return [embeddings] 
     
     def add_to_indexer(self, index, embeddings):
