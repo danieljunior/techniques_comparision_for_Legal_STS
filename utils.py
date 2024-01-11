@@ -23,16 +23,17 @@ from tqdm import tqdm
 from annoy import AnnoyIndex
 from rank_bm25 import BM25Plus
 
-from longformer_embedder import LongformerEmbedder
-from bert_embedder import BertEmbedder
-from word2vec_embedder import Word2VecEmbedder
-from tfidf_embedder import TfIdfEmbedder
-from elmo_embedder import ElmoEmbedder
-from sentence_transformer_embedder import SentenceTransformerEmbedder
-from doc2vec_embedder import Doc2VecEmbedder
-from lda_embedder import LDAEmbedder
+# from longformer_embedder import LongformerEmbedder
+# from bert_embedder import BertEmbedder
+# from word2vec_embedder import Word2VecEmbedder
+# from tfidf_embedder import TfIdfEmbedder
+# from elmo_embedder import ElmoEmbedder
+# from sentence_transformer_embedder import SentenceTransformerEmbedder
+from transformers_embedder import TransformersEmbedder
+# from doc2vec_embedder import Doc2VecEmbedder
+# from lda_embedder import LDAEmbedder
 
-ray.init(num_cpus=4, ignore_reinit_error=True)
+# ray.init(num_cpus=4, ignore_reinit_error=True)
 
 def nlpyport_tokenizer(corpus):
     documents = [tokenize(document) for document in corpus]
@@ -40,6 +41,8 @@ def nlpyport_tokenizer(corpus):
     return documents
 
 def textos_preprocessados(docs):
+    ray.init(num_cpus=4, ignore_reinit_error=True)
+
     results = []
     for texto in tqdm(docs):
         results.append(tokenize.remote(texto))
@@ -121,6 +124,14 @@ def sentence_transformer():
     return SentenceTransformerEmbedder('models/portuguese_sentence_transformer', 
                                         setup_indexer(vectors_size=768))
 
+def sim_cse():
+    return SentenceTransformerEmbedder('models/portuguese_sim_cse',
+                                        setup_indexer(vectors_size=768))
+
+def diff_cse():
+    return TransformersEmbedder('models/portuguese_diff_cse',
+                                        setup_indexer(vectors_size=768))
+
 def elmo():
     options_path = 'models/elmo/options.json'
     weights_path = 'models/elmo/elmo_pt_weights_dgx1.hdf5'
@@ -146,19 +157,21 @@ def bm25(data):
 
 def embedders():
     return {
-        'tfidf': tfidf,
-        'bm25': bm25,
-        'lda': lda,
-        'word2vec': word2vec,
-        'weighted_word2vec': weighted_word2vec,
-        'fasttext': fasttext,
-        'weighted_fasttext': weighted_fasttext,
-        'doc2vec': doc2vec,
-        'sentence_transformer': sentence_transformer,
-        'bert': bert,
-        'bertikal': bertikal,
-        'itd_bert': itd_bert,
-        'longformer':longformer,
-        'itd_longformer': itd_longformer,
-        'elmo': elmo,
+        # 'tfidf': tfidf,
+        # 'bm25': bm25,
+        # 'lda': lda,
+        # 'word2vec': word2vec,
+        # 'weighted_word2vec': weighted_word2vec,
+        # 'fasttext': fasttext,
+        # 'weighted_fasttext': weighted_fasttext,
+        # 'doc2vec': doc2vec,
+        # 'sentence_transformer': sentence_transformer,
+        # 'sim_cse': sim_cse,
+        'diff_cse': diff_cse,
+        # 'bert': bert,
+        # 'bertikal': bertikal,
+        # 'itd_bert': itd_bert,
+        # 'longformer':longformer,
+        # 'itd_longformer': itd_longformer,
+        # 'elmo': elmo,
     }

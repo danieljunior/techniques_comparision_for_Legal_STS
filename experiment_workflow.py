@@ -20,7 +20,7 @@ logging.basicConfig(filename='experiment_workflow.log', filemode='w',
 
 logger.info('Loading and preprocessing data...')
 try:
-    tcu_data = pd.read_csv('datasets/jurisprudencias_tcu_final_preprocessado.csv')
+    tcu_data = pd.read_csv('./datasets/jurisprudencias_tcu_final_preprocessado.csv')
 except:
     tcu_data = pd.read_csv('datasets/jurisprudencias_tcu_final.csv')
     tcu_data.VOTO = tcu_data.VOTO.str.lower()
@@ -28,7 +28,7 @@ except:
     tcu_data.to_csv('datasets/jurisprudencias_tcu_final_preprocessado.csv')    
 
 try:
-    stj_data = pd.read_csv('datasets/jurisprudencias_stj_final_preprocessado.csv')
+    stj_data = pd.read_csv('./datasets/jurisprudencias_stj_final_preprocessado.csv')
 except:
     stj_data = pd.read_csv('datasets/jurisprudencias_stj_final.csv')
     stj_data.EMENTA = stj_data.EMENTA.str.lower()
@@ -113,7 +113,7 @@ for data_name, items in data.items():
         logger.info('Saving results...')
         data = pd.DataFrame(results, 
                             columns=['SOURCE_INDEX','SIMILAR_INDEX','COSINE_SIMILARITY','MODEL_NAME'])
-        data.to_csv('results/'+data_name+'/similarities.csv')
+        data.to_csv('results/'+data_name+'/similarities_diff_cse.csv')
 # indexer = setup_indexer()
 # indexer.load('results/bertlongformer.ann')
 

@@ -2,3 +2,4 @@ datasets/
 models/
 results/
 *.zip
+nohup.out
