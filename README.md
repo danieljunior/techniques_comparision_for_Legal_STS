@@ -46,9 +46,10 @@
 - http://localhost:8888/lab
 
 #### Run scripts and notebooks
-1. Run file `experiment_workflow.py`
-2. Run notebook `notebooks/Data Analysis.ipynb`
+1. Run script `experiment_workflow.py`
+2. Run script `faiss_get_nns.py`
 3. Run notebook `notebooks/Data Analysis.ipynb`
+   1. Verify the following package and versions: `Jinja2-3.0.1` `bokeh==2.3.0` `pynndescent==0.5.8` (run pip install with `--ignore-installed llvmlite`) 
 4. To run `finetunning_sim_cse.py` must update `sentence-transformers` from fresh docker image: `pip install --upgrade sentence-transformers`
 5. To run the training of DiffCSE:  `https://github.com/danieljunior/PtBr-DiffCSE`
 6. To use PtBr-DiffCSE:
@@ -60,3 +61,4 @@ python -m ensurepip --default-pip
 wget https://bootstrap.pypa.io/get-pip.py
 pip install --upgrade transformers
 ```
+

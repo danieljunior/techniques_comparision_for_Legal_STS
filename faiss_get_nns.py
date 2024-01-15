@@ -11,7 +11,7 @@ embedders = {
     'tfidf':{'tcu': 34081, 'stj': 25696},
     'lda':{'tcu': 44, 'stj': 1458},
     'word2vec': 300,
-    'weighted_word2vec': 300,    
+    'weighted_word2vec': 300,
     'fasttext': 300,
     'weighted_fasttext': 300,
     'doc2vec': 100,
@@ -21,7 +21,9 @@ embedders = {
     'bertikal': 3072,
     'longformer':3072,
     'itd_longformer': 3072,
-    'elmo': 1024, 
+    'elmo': 1024,
+    'sim_cse': 768,
+    'diff_cse': 768,
 }
 
 def convert_annoy_to_faiss():
@@ -85,5 +87,5 @@ def get_nns():
                                 columns=['SOURCE_INDEX','SIMILAR_INDEX','SIMILARITY','MODEL_NAME'])
         data.to_csv('results/faiss/'+data_name+'/similarities.csv')
 
-get_nns()
 # convert_annoy_to_faiss()
+get_nns()

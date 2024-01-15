@@ -33,3 +33,4 @@ faiss-cpu
 selenium 
 geckodriver-autoinstaller
 protobuf==3.20.*
+Jinja2-3.0.1
