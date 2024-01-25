@@ -50,15 +50,29 @@
 2. Run script `faiss_get_nns.py`
 3. Run notebook `notebooks/Data Analysis.ipynb`
    1. Verify the following package and versions: `Jinja2-3.0.1` `bokeh==2.3.0` `pynndescent==0.5.8` (run pip install with `--ignore-installed llvmlite`) 
-4. To run `finetunning_sim_cse.py` must update `sentence-transformers` from fresh docker image: `pip install --upgrade sentence-transformers`
-5. To run the training of DiffCSE:  `https://github.com/danieljunior/PtBr-DiffCSE`
+4. To run the training/usage of PtBr-SimCSE:
+```conda deactivate
+conda create --name simcse --clone base
+conda activate simcse
+python -m ensurepip --default-pip
+wget https://bootstrap.pypa.io/get-pip.py
+python get-pip.py
+pip install importlib_metadata==6.7.0
+pip install sentence-transformers==2.2.2
+pip install pandas==1.2.4
+python finetunning_sim_cse.py # to train
+``` 
+
+5. To run the training of PtBr-DiffCSE:  `https://github.com/danieljunior/PtBr-DiffCSE`
 6. To use PtBr-DiffCSE:
 
 ```conda deactivate
-conda conda create --name diffcse --clone base
+conda create --name diffcse --clone base
 conda activate diffcse
 python -m ensurepip --default-pip
 wget https://bootstrap.pypa.io/get-pip.py
+python get-pip.py
 pip install --upgrade transformers
+pip install pandas==1.2.4
 ```
 

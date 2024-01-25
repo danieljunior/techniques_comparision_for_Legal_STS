@@ -28,7 +28,7 @@ from rank_bm25 import BM25Plus
 # from word2vec_embedder import Word2VecEmbedder
 # from tfidf_embedder import TfIdfEmbedder
 # from elmo_embedder import ElmoEmbedder
-# from sentence_transformer_embedder import SentenceTransformerEmbedder
+from sentence_transformer_embedder import SentenceTransformerEmbedder
 from transformers_embedder import TransformersEmbedder
 # from doc2vec_embedder import Doc2VecEmbedder
 # from lda_embedder import LDAEmbedder
@@ -51,7 +51,7 @@ def textos_preprocessados(docs):
     for i in results:
         d = ray.get(i)
         preprocessado.append(' '.join(d))
-    
+
     return preprocessado
 
 @ray.remote
@@ -69,15 +69,15 @@ def tokenize(document):
     tokens = [lema for idx, lema in enumerate(doc.lemas)
                     if lema != 'EOS'
                     and lema != '']
-    tokens = [token for token in tokens 
+    tokens = [token for token in tokens
               if token not in nltk.corpus.stopwords.words('portuguese')]
 
-    tokens = [token for token in tokens 
+    tokens = [token for token in tokens
               if not re.match('[^A-Za-z0-9]+', token)]
 
-    tokens = [token for token in tokens 
+    tokens = [token for token in tokens
               if not any(char.isdigit() for char in token)]
-    
+
     return tokens
 
 def biggests_index(a,N): 
@@ -166,8 +166,8 @@ def embedders():
         # 'weighted_fasttext': weighted_fasttext,
         # 'doc2vec': doc2vec,
         # 'sentence_transformer': sentence_transformer,
-        # 'sim_cse': sim_cse,
-        'diff_cse': diff_cse,
+        'sim_cse': sim_cse,
+        # 'diff_cse': diff_cse,
         # 'bert': bert,
         # 'bertikal': bertikal,
         # 'itd_bert': itd_bert,

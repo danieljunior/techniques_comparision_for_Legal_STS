@@ -3,9 +3,13 @@ from transformers import BertTokenizer
 from tqdm import tqdm
 from sklearn.metrics.pairwise import cosine_similarity
 import ray
+import numpy as np
+import random
 
 from longformer_embedder import LongformerEmbedder
 from bert_embedder import BertEmbedder
+
+random.seed(42)
 
 
 def count_tokens(data, tokenizer, text_columns, output_path):
@@ -70,42 +74,76 @@ def calculate_similarities(sample, embedder_name):
     return results
 
 
-# 1) Textos menores que 512 tokens (mais próximo da metade)
-# 2) Textos até 512 tokens (mais próximo disso possível)
-# 3) Textos maiores que 512 tokens (maior que isso possível)
+def calculate_similarities_by_length_range():
+    # 1) Textos menores que 512 tokens (mais próximo da metade)
+    # 2) Textos até 512 tokens (mais próximo disso possível)
+    # 3) Textos maiores que 512 tokens (maior que isso possível)
 
-data = pd.read_csv('./datasets/stj_sts_with_tokens.csv')
-minor = filter_n_tokens(data, 206, 306)
-medium = filter_n_tokens(data, 412, 512)
-large = filter_n_tokens(data, 612, 10000)
+    data = pd.read_csv('./datasets/stj_sts_with_tokens.csv')
+    minor = filter_n_tokens(data, 206, 306)
+    medium = filter_n_tokens(data, 412, 512)
+    large = filter_n_tokens(data, 612, 10000)
 
-min_length = min([len(minor), len(medium), len(large)])
-# min_length = 5
+    min_length = min([len(minor), len(medium), len(large)])
+    # min_length = 5
 
-samples = {'minor': minor.sample(min_length, random_state=42),
-           'medium': medium.sample(min_length, random_state=42),
-           'large': large.sample(min_length, random_state=42)}
+    samples = {'minor': minor.sample(min_length, random_state=42),
+               'medium': medium.sample(min_length, random_state=42),
+               'large': large.sample(min_length, random_state=42)}
 
-embedders = {'bert': bert,
-             'itd_bert': itd_bert,
-             'longformer': longformer,
-             'itd_longformer': itd_longformer}
+    embedders = {'bert': bert,
+                 'itd_bert': itd_bert,
+                 'longformer': longformer,
+                 'itd_longformer': itd_longformer}
 
-# ray.init(num_cpus=4, ignore_reinit_error=True)
-ray.init(ignore_reinit_error=True)
+    # ray.init(num_cpus=4, ignore_reinit_error=True)
+    ray.init(ignore_reinit_error=True)
 
-for sample_name, sample in tqdm(samples.items(), desc="Samples"):
-    results = {}
-    processes = []
+    for sample_name, sample in tqdm(samples.items(), desc="Samples"):
+        results = {}
+        processes = []
 
-    for embedder_name in tqdm(embedders.keys(), desc="Embedders"):
-        processes.append(calculate_similarities.remote(sample, embedder_name))
+        for embedder_name in tqdm(embedders.keys(), desc="Embedders"):
+            processes.append(calculate_similarities.remote(sample, embedder_name))
 
-    for idx, process in enumerate(processes):
-        result = ray.get(process)
-        embedder_name = list(embedders.keys())[idx]
-        results[embedder_name] = result
-    embedders_names = list(results.keys())
-    for name in embedders_names:
-        sample[name.upper() + "_SIMILARITY"] = results[name]
-    sample.to_csv('./datasets/stj_sts_' + sample_name + ".csv", index=False)
+        for idx, process in enumerate(processes):
+            result = ray.get(process)
+            embedder_name = list(embedders.keys())[idx]
+            results[embedder_name] = result
+        embedders_names = list(results.keys())
+        for name in embedders_names:
+            sample[name.upper() + "_SIMILARITY"] = results[name]
+        sample.to_csv('./datasets/stj_sts_' + sample_name + ".csv", index=False)
+
+
+def calculate_correlation_between_methods_in_differents_length_ranges():
+    for variation in ['minor', 'medium', 'large']:
+        print(variation.upper())
+        data = pd.read_csv('./datasets/stj_sts_' + variation + '.csv')
+        data['score'] = data['score'].apply(lambda x: np.interp(x, [0, 5], [0, 1]))
+        data = (data.rename(columns=lambda x: x.replace('_SIMILARITY', ''))
+                .rename(columns=lambda x: 'HEURISTIC' if x == 'score' else x))
+        data = data.drop(['sentence_A', 'sentence_B', 'range', 'SPLIT', 'n_tokens_a', 'n_tokens_b'], axis=1)
+        pearson = data.corr(method='pearson').round(2)
+        print("\nPEARSON")
+        print(pearson)
+        pearson.to_csv('./results/' + variation + 'stj_dapt_long_pearson.csv', index=False)
+        spearman = data.corr(method='spearman').round(2)
+        print("\nSPEARMAN")
+        print(spearman)
+        spearman.to_csv('./results/' + variation + 'stj_dapt_long_spearman.csv', index=False)
+        print("#############################################################################")
+
+
+def count_words_length():
+    print("Loading data...")
+    for dataname in ['stj', 'tcu']:
+        print(dataname.upper())
+        data = pd.read_csv('./datasets/jurisprudencias_' + dataname + '_final.csv')
+        column = 'EMENTA' if dataname == 'stj' else 'VOTO'
+        length = np.array([len(x.split(' ')) for x in data[column]])
+        print("MEAN {}".format(length.mean().round(0)))
+        print("STD {}".format(length.std().round(0)))
+
+
+calculate_correlation_between_methods_in_differents_length_ranges()

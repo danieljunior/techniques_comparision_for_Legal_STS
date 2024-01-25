@@ -2,9 +2,9 @@ import logging
 import pickle
 
 import pandas as pd
-from bert_embedder import BertEmbedder
-from sentence_transformer_embedder import SentenceTransformerEmbedder
-from tfidf_embedder import TfIdfEmbedder
+# from bert_embedder import BertEmbedder
+# from sentence_transformer_embedder import SentenceTransformerEmbedder
+# from tfidf_embedder import TfIdfEmbedder
 # from rank_bm25 import BM25Plus
 from sklearn.metrics.pairwise import cosine_similarity
 import numpy as np
@@ -18,7 +18,18 @@ logging.basicConfig(filename='embedding_heuristic_expert_comparision.log', filem
                     format=logFormatter, level=logging.INFO)
 logger = logging.getLogger(__name__)
 
-heuristic_expert = pd.read_csv('./datasets/heuristic_expert_score.csv', index_col=0)
+
+def process_data_to_generate_latex(path):
+    data = pd.read_csv(path)
+    cols = [col for col in data.columns if 'ROUNDED' not in col]
+    cols_idx = [idx for idx, col in enumerate(data.columns) if 'ROUNDED' in col]
+    tmp = data[cols].rename(columns=lambda x: x.replace('_SCORE', '').upper()).round(2)
+    tmp = tmp.drop(cols_idx)
+    tmp.insert(loc=0, column='', value=tmp.columns.tolist())
+    return tmp
+
+# heuristic_expert = pd.read_csv('./datasets/heuristic_expert_score.csv', index_col=0)
+heuristic_expert = pd.read_csv('./results/heuristic_expert_embeddings_scores_v3.csv')
 try:
     with open("datasets/heuristic_expert_processed_texts", "rb") as fp:  # Unpickling
         all_texts = pickle.load(fp)
@@ -90,12 +101,12 @@ for model_name, similarity in results.items():
     heuristic_expert[model_name] = similarity
 
 logger.info('Saving embeddings similarities...')
-heuristic_expert.to_csv('results/heuristic_expert_embeddings_scores_v2.csv', index=False)
+heuristic_expert.to_csv('results/heuristic_expert_embeddings_scores_v4.csv', index=False)
 
 logger.info('Saving pearson correlations...')
 pearson = heuristic_expert.drop(['TEXT1', 'TEXT2'], axis=1).corr(method='pearson')
-pearson.to_csv('results/heuristic_expert_embeddings_pearson_v2.csv', index=False)
+pearson.to_csv('results/heuristic_expert_embeddings_pearson_v4.csv', index=False)
 spearman = heuristic_expert.drop(['TEXT1', 'TEXT2'], axis=1).corr(method='spearman')
-spearman.to_csv('results/heuristic_expert_embeddings_spearman_v2.csv', index=False)
+spearman.to_csv('results/heuristic_expert_embeddings_spearman_v4.csv', index=False)
 
 logger.info('Finish!')

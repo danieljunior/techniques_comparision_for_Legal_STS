@@ -5,27 +5,40 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a296d78c-e29b-4098-9c7d-166338837ed1" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/faiss_get_nns.py" beforeDir="false" afterPath="$PROJECT_DIR$/faiss_get_nns.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/correlation_scores.py" beforeDir="false" afterPath="$PROJECT_DIR$/correlation_scores.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dapt.py" beforeDir="false" afterPath="$PROJECT_DIR$/dapt.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/notebooks/Data Analysis.ipynb" beforeDir="false" afterPath="$PROJECT_DIR$/notebooks/Data Analysis.ipynb" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/results/stj_data_hist.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/results/stj_data_hist.pdf" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/results/tcu_data_hist.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/results/tcu_data_hist.pdf" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="HighlightingSettingsPerFile">
     <setting file="file://$PROJECT_DIR$/Dockerfile" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/correlation_scores.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/embedding_heuristic_expert_comparison.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/experiment_workflow.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/faiss_get_nns.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/finetunning_sentence_transformer.py" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/requirements.txt" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/transformers_embedder.py" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/utils.py" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -71,6 +84,14 @@
       <workItem from="1704386258655" duration="2956000" />
       <workItem from="1705082921609" duration="8321000" />
       <workItem from="1705325382003" duration="646000" />
+      <workItem from="1705416279482" duration="2226000" />
+      <workItem from="1705419424953" duration="4530000" />
+      <workItem from="1705587800576" duration="632000" />
+      <workItem from="1705682134638" duration="2029000" />
+      <workItem from="1705703982302" duration="2879000" />
+      <workItem from="1705854129112" duration="679000" />
+      <workItem from="1705862001134" duration="2127000" />
+      <workItem from="1705934118755" duration="24509000" />
     </task>
     <servers />
   </component>
