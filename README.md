@@ -7,11 +7,12 @@
 - Word2Vec (Average e Weighted)
 - FastText (Average e Weighted)
 - Doc2Vec
-- Sentence2Vec
+- SentenceTransformer
 - ELMo (Average e Weighted)
-- BERT (Só pré-treinado e tunado)
-- Longformer (Só pré-treinado e tunado)
-
+- BERT (pre-trained and fine-tuned)
+- Longformer (pre-trained and fine-tuned)
+- SimCSE
+- DiffCSE
 
 ## Env build
 
@@ -29,27 +30,24 @@
 
 ## Code execution 
 
-#### Download data
-- Install gdown python lib and download all files needed:
-    - `pip install gdown`
-    - `gdown https://drive.google.com/uc?id=1UD-mK3K9KhuvJtRVwA_CqPE1E0Z2lAuR && \
-        unzip models.zip && \
-        rm -f models.zip
+**Datasets**: https://iduffbr-my.sharepoint.com/:u:/g/personal/danieljunior_id_uff_br/EbIjA4sjrKtGhIA-7uz9Xl8BBaLZ9f1eAyEGT980WEF3Xg?e=2PFzQW
 
-        gdown https://drive.google.com/uc?id=1iTXMfsmhs4w3qgkM3kIreePUxbms6zwC && \
-        unzip datasets.zip && \
-        rm -f datasets.zip`
-
-#### Start jupyter notebook
-- `jupyter notebook --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token='legalsts' &`
-#### Access jupyter notebook
-- http://localhost:8888/lab
+**Models**: https://huggingface.co/melll-uff
 
 #### Run scripts and notebooks
+
 1. Run script `experiment_workflow.py`
+
+
 2. Run script `faiss_get_nns.py`
+
+
 3. Run notebook `notebooks/Data Analysis.ipynb`
    1. Verify the following package and versions: `Jinja2-3.0.1` `bokeh==2.3.0` `pynndescent==0.5.8` (run pip install with `--ignore-installed llvmlite`) 
+   2. Start jupyter notebook: `jupyter notebook --no-browser --ip=0.0.0.0 --allow-root --NotebookApp.token='legalsts' &`
+   3. Access jupyter notebook: `http://localhost:8888/lab
+   
+
 4. To run the training/usage of PtBr-SimCSE:
 ```conda deactivate
 conda create --name simcse --clone base
@@ -64,6 +62,8 @@ python finetunning_sim_cse.py # to train
 ``` 
 
 5. To run the training of PtBr-DiffCSE:  `https://github.com/danieljunior/PtBr-DiffCSE`
+
+
 6. To use PtBr-DiffCSE:
 
 ```conda deactivate
